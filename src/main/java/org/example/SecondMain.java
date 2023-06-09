@@ -22,13 +22,15 @@ public class SecondMain {
 
         System.out.print("Please enter the year: ");
 
-        int year = scanner.nextInt();
+        String year = scanner.next();
+
+        System.out.println("calculating...");
 
         JavaRDD<String> ventesRecords = sparkContext.textFile("ventes.txt");
 
         JavaRDD<String> filteredVentesRecords = ventesRecords.filter(s -> {
-            int ventYear = Integer.parseInt(s.split(" ")[0].split("-")[2]);
-            return ventYear == year;
+            String ventYear = s.split(" ")[0].split("-")[2];
+            return ventYear.equals(year);
         });
 
         JavaPairRDD<String, Double> venteDataRDD = filteredVentesRecords.mapToPair(line -> {
